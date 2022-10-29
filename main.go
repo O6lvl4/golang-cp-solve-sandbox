@@ -11,7 +11,9 @@ import (
 )
 
 func main() {
-	fmt.Println("TODO: HERE SOLVE CODE")
+	reader := NewIOReader()
+	inputs := reader.ReadInputs()
+	fmt.Println(inputs)
 }
 
 // SOLVE CODE
@@ -124,4 +126,42 @@ func MinWithNumebers(numbers []int) int {
 		}
 	}
 	return min
+}
+
+func Map[T any, S any](values []T, mapping func(T) S) []S {
+	var mappedValues = make([]S, 0)
+	for _, v := range values {
+		mappedValues = append(mappedValues, mapping(v))
+	}
+	return mappedValues
+}
+
+func Filter[T any](values []T, filter func(T) bool) []T {
+	var filteredValues = make([]T, 0)
+	for _, v := range values {
+		if filter(v) {
+			filteredValues = append(filteredValues, v)
+		}
+	}
+	return filteredValues
+}
+
+func ContainsWithValue[T comparable](content []T, value T) bool {
+	for _, v := range content {
+		if v == value {
+			return true
+		}
+	}
+	return false
+}
+
+func ContainsWithValues[T comparable](content []T, values []T) bool {
+	for _, c := range content {
+		for _, v := range values {
+			if c == v {
+				return true
+			}
+		}
+	}
+	return false
 }
