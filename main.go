@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -94,7 +93,26 @@ func SplitNumbers(text string) []int {
 	return numbers
 }
 
+// Switch Snippet
+
+func SwapValuesWithValue[T comparable](values []T, value T) *T {
+	for _, v := range values {
+		if v != value {
+			return &v
+		}
+	}
+	return nil
+}
+
 // Calc Snippet
+
+func MakeNumberRange(min, max int) []int {
+	a := make([]int, max-min+1)
+	for i := range a {
+		a[i] = min + i
+	}
+	return a
+}
 
 func SumNumbers(numbers []int) int {
 	sum := 0
@@ -108,24 +126,32 @@ func PercentageRatio(percentage int) float64 {
 	return float64(percentage) * 0.01
 }
 
-func MaxWithNumebers(numbers []int) int {
-	max := math.MinInt
-	for _, n := range numbers {
-		if max < n {
-			max = n
+func Max[T Ordered](s []T) T {
+	if len(s) == 0 {
+		var zero T
+		return zero
+	}
+	m := s[0]
+	for _, v := range s {
+		if m < v {
+			m = v
 		}
 	}
-	return max
+	return m
 }
 
-func MinWithNumebers(numbers []int) int {
-	min := math.MaxInt
-	for _, n := range numbers {
-		if min > n {
-			min = n
+func Min[T Ordered](s []T) T {
+	if len(s) == 0 {
+		var zero T
+		return zero
+	}
+	m := s[0]
+	for _, v := range s {
+		if m > v {
+			m = v
 		}
 	}
-	return min
+	return m
 }
 
 func Map[T any, S any](values []T, mapping func(T) S) []S {
@@ -164,4 +190,49 @@ func ContainsWithValues[T comparable](content []T, values []T) bool {
 		}
 	}
 	return false
+}
+
+// Constraints
+
+// Signed is a constraint that permits any signed integer type.
+// If future releases of Go add new predeclared signed integer types,
+// this constraint will be modified to include them.
+type Signed interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+
+// Unsigned is a constraint that permits any unsigned integer type.
+// If future releases of Go add new predeclared unsigned integer types,
+// this constraint will be modified to include them.
+type Unsigned interface {
+	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
+
+// Integer is a constraint that permits any integer type.
+// If future releases of Go add new predeclared integer types,
+// this constraint will be modified to include them.
+type Integer interface {
+	Signed | Unsigned
+}
+
+// Float is a constraint that permits any floating-point type.
+// If future releases of Go add new predeclared floating-point types,
+// this constraint will be modified to include them.
+type Float interface {
+	~float32 | ~float64
+}
+
+// Complex is a constraint that permits any complex numeric type.
+// If future releases of Go add new predeclared complex numeric types,
+// this constraint will be modified to include them.
+type Complex interface {
+	~complex64 | ~complex128
+}
+
+// Ordered is a constraint that permits any ordered type: any type
+// that supports the operators < <= >= >.
+// If future releases of Go add new ordered types,
+// this constraint will be modified to include them.
+type Ordered interface {
+	Integer | Float | ~string
 }
