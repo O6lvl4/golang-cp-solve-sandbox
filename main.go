@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -190,6 +191,10 @@ func ContainsWithValues[T comparable](content []T, values []T) bool {
 		}
 	}
 	return false
+}
+
+func PowByInt(value int, pow int) int {
+	return int(math.Pow(float64(value), float64(pow)))
 }
 
 // Constraints
